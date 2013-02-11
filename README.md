@@ -1,7 +1,7 @@
 PYM entropy estimator MATLAB reference implementation
 =====================================================
 
-This code lives in github: https://github.com/memming/PYMentropy
+This code lives in github: https://github.com/pillowlab/PYMentropy
 
 This is a reference implementation in MATLAB of the entropy estimator based on Pitman-Yor mixture (PYM) prior. For the details of how we derive the estimator see the following papers:
 
@@ -25,7 +25,7 @@ where `Hbls` is the Bayes least squares estimate of entropy, and `Hvar` is the p
 
 Requirements and Installation
 =============================
-To download go to github: https://github.com/memming/PYMentropy/archive/master.zip
+To download go to github: https://github.com/pillowlab/PYMentropy/archive/master.zip
 
 You must have Optimization toolbox (for `fmincon`).
 To install, just add the package to your MATLAB path.
