@@ -9,6 +9,9 @@ function [Hbls, Hvar, SummaryStr] = computeH_PYM_v4(mm, icts, param, verbose)
 %     icts - counts for each multiplicty
 %    param - (optional) parameter structure
 %	  param.pymPrior: (optional) This is a structure obtained from pymPriorFactory.
+%         param.returnEB: (optional) If true, return the empirical bayes
+%                       estimate of entropy. That is, return the posterior
+%                       mean of entropy given the parameters (alpha,d) at the MAP.
 %	  param.verbose: (optional) if true, outputs debugging info
 %	  param.nagrid: (optional) Integer > 0. Specify number of gridpoints
 %	                to use in integral over alpha. 
@@ -49,7 +52,7 @@ function [Hbls, Hvar, SummaryStr] = computeH_PYM_v4(mm, icts, param, verbose)
 % See also: pymPriorFactory
 % Requires: optimization toolbox
 %
-% $Id: computeH_PYM_v4.m 2805 2013-02-11 18:56:31Z evan $
+% $Id: computeH_PYM_v4.m 2867 2013-02-20 07:04:17Z evan $
 % Copyright 2012 Pillow lab. All rights reserved.
 %
 
@@ -100,6 +103,13 @@ options = optimset('Algorithm', 'interior-point', 'Display', 'off', ...
 if verbose
     fprintf('MAP (alpha = %g, d = %g) [fval = %g]\n', mpt(1), mpt(2), fval);
 end
+
+if isfield(param, 'returnEB') && param.returnEB
+    if verbose; fprintf('Returning empirical bayes estimate.'); end
+    [Hbls,Hvar] = computeHpy(mm,icts,mpt(1),mpt(2));
+    return
+end
+
 fval = -fval;
 
 %% Verify numerical Hessian
@@ -113,6 +123,7 @@ if(nargout > 2) % if we are going to pass back summary structure
 end
 
 if any(isnan(hessian(:))) || any(isinf(hessian(:)))
+    warning('PYM:naninfHessian', 'Hessian contains nan or inf values. Data may be very unlikely under the chosen prior.')
     p = true;
 else
     [~, p] = chol(hessian); % use chol to see if Hessian is positive definite
@@ -188,7 +199,8 @@ likMapVal = logliPYoccupancy(mpt(1), mpt(2), mm, icts);
 %% Compute function at gridpoints
 if Nd * Na < 1e4
     [aa dd] = meshgrid(ax,dx);
-    lik = exp(logliPYoccupancy(aa(:),dd(:),mm,icts) - likMapVal);
+    loglik = logliPYoccupancy(aa(:),dd(:),mm,icts);
+    lik = exp(loglik - max(loglik));
     prior = param.pymPrior.f(param.pymPrior,aa(:),dd(:));
     [mc vc] = condH(aa(:), dd(:), mm, icts);
     A = bsxfun(@times, lik.*prior, vec(dw * aw'));
@@ -205,7 +217,8 @@ else
     for adx = 1:Na
         aa = ax(adx)*ones(size(dx));
 	if verbose; fprintf('%0.1f\r', adx/Na); end
-        lik = exp(logliPYoccupancy(aa,dx,mm,icts) - likMapVal);
+        loglik = logliPYoccupancy(aa,dx,mm,icts);
+        lik = exp(loglik - max(loglik));
         prior = param.pymPrior.f(param.pymPrior,aa,dx);
         [mc vc] = condH(aa, dx, mm, icts);
         %% Compute integral
@@ -255,6 +268,10 @@ function [nlogp ndlogp nddlogp] = nlogPostPYoccupancy(a,d,mm,icts,pymPrior)
 	[prior, dprior, ddprior] = pymPrior.f(pymPrior, a, d);
 	ndlogp = -dlogp - dprior ./ prior;
 	nddlogp = -ddlogp - (prior*ddprior - dprior'*dprior) ./prior^2;
+%     fprintf('here!')
+%     if any(isnan(nddlogp(:))) || any(isinf(nddlogp(:)))
+%         keyboard
+%     end
     elseif nargout > 1
 	[logp dlogp] = logliPYoccupancy(a,d,mm,icts);
 	[prior, dprior] = pymPrior.f(pymPrior, a, d);
