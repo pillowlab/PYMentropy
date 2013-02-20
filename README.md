@@ -102,6 +102,6 @@ Controlling the Prior
 ---------------------
 Theoretically, the PYM estimator has a degree freedom in specifying the prior in the gamma direction (details in the papers). Basically, any bounded, non-negative valued function `q(g = gamma)` defined on [0, Inf] can be used as a prior. The default prior is `q(g) = exp(-10/(1-g))`, which places more prior probability mass on distributions with light-tails, and limits the amount of prior mass placed on extremely heavy-tailed distributions.
 
-Use `prior = pymPriorFactory(priorName, param)` to generate prespecified alternative priors, such as `q(g) = exp(-g)`. To use a custom prior, you must specify function handles for prior the prior function itself, `q(g)`, as well as its first and second derivatives. Once these function handles are placed in a structure, your custom prior may be used in a manner identical to that of the built-in priors (see pymPriorFactory.m for details).
+Use `prior = pymPriorFactory(priorName, param)` to generate prespecified alternative priors, such as `q(g) = exp(-g)`. To use a custom prior, you must specify function handles for the prior function, `q(g)`, as well as its first and second derivatives. Once these function handles are placed in a structure (see pymPriorFactory.m for details), your custom prior may be used in a manner identical to that of the built-in priors.
 
 **Enjoy!**
