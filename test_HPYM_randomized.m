@@ -45,7 +45,7 @@ for idx = 1:Ntest
 end
 
 if(GENERATE_TEST)
-    save('Hinf/test_Hvals.mat', 'H_TEST', 'seedval', 'Ntest')
+    save('test_Hvals.mat', 'H_TEST', 'seedval', 'Ntest')
 end
 
 %% Finally, some hand-built tests in case all this random nonsense falls apart.
