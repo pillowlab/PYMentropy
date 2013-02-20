@@ -2,7 +2,7 @@
 
 <p>This code lives in github: https://github.com/pillowlab/PYMentropy</p>
 
-<p>This is a reference implementation in MATLAB of the entropy estimator based on Pitman-Yor mixture (PYM) prior. For the details of how we derive the estimator see the following papers:</p>
+<p>This is a reference implementation in MATLAB of the entropy estimator based on a Pitman-Yor mixture (PYM) prior. For the details behind how we derive the estimator, see the following papers:</p>
 
 <ul>
 <li>Evan Archer, Il Memming Park, Jonathan W. Pillow. Bayesian estimation of discrete entropy with mixtures of stick breaking priors. Neural Information Processing Systems <a href="http://books.nips.cc/nips25.html">(NIPS) 2012</a></li>
@@ -11,7 +11,7 @@
 
 <h1>Quick example</h1>
 
-<p>Let's estimate entropy from some sequence of natural numbers using the PYM estimator.</p>
+<p>Let's estimate entropy from a sequence of natural numbers using the PYM estimator (in practice, the sequence would be samples drawn from some unknown distribution):</p>
 
 <pre><code>&gt;&gt; [mm, icts] = multiplicitiesFromSamples([3 2 4 3 1 4 2 4 4]);
 &gt;&gt; [Hbls, Hvar] = computeH_PYM_v4(mm, icts)
@@ -23,7 +23,7 @@ Hvar =
 0.2715
 </code></pre>
 
-<p>where <code>Hbls</code> is the Bayes least squares estimate of entropy, and <code>Hvar</code> is the posterior variance of the estimate. The units of this toolbox is <em>nats</em> (natural logarithm); to convert to <em>bits</em>, divide the result by <code>log(2) = 0.6931...</code>.</p>
+<p>Here, <code>Hbls</code> is the Bayes least squares estimate of entropy, and <code>Hvar</code> is the posterior variance of the estimate. The units of this toolbox is <em>nats</em> (natural logarithm); to convert to <em>bits</em>, divide the result by <code>log(2) = 0.6931...</code>.</p>
 
 <h1>Requirements and Installation</h1>
 
@@ -43,7 +43,7 @@ This package is developed under 7.13.0.564 (R2011b).</p>
 
 <h1>Converting data</h1>
 
-<p>There are three levels of representation of raw data we consider. All entropy estimators provided take a succint representation called <em>multiplicities</em>. The multiplicity representation consists of two vectors of same length: <code>mm</code> contains the number of symbols with the same number of occurrences, and <code>icts</code> contains the corresponding number of occurrences. In short, <code>mm(j)</code> is number of symbols with <code>icts(j)</code> occurrences. For example, for the symbol sequence <code>[a b b c c d d d d]</code>, the multiplicity representation is <code>mm = [1 2 1]</code> and <code>icts = [1 2 4]</code>, because there is only one symbol with a single occurrence (<code>a</code>), two symbols with two occurrences (<code>b</code> and <code>c</code>), and one symbol with 4 occurrences (<code>d</code>). The ordering in <code>mm</code> and <code>icts</code> is not meaningful. We provide the following utility functions to convert data to the multiplicities. However, for large data, it is recommended that you write your own code that can exploit your data structure to convert it to the multiplicity representation in a memory efficient manner.</p>
+<p>We represent raw data in three distinct ways, each at a different level of abstraction. The raw data itself are samples of discrete symbols from some unknown distribution. We do not operate directly upon the samples; rather, all entropy estimators provided take a succint representation called <em>multiplicities</em>. The multiplicity representation consists of two vectors of the same length: <code>mm</code> contains the number of symbols with the same number of occurrences, and <code>icts</code> contains the corresponding number of occurrences. In short, <code>mm(j)</code> is number of symbols with <code>icts(j)</code> occurrences. For example, the symbol sequence <code>[a b b c c d d d d]</code> has a multiplicity representation where <code>mm = [1 2 1]</code> and <code>icts = [1 2 4]</code>; this tells us that there is only one symbol with a single occurrence (<code>a</code>), two symbols with two occurrences (<code>b</code> and <code>c</code>), and one symbol with 4 occurrences (<code>d</code>). The ordering in <code>mm</code> and <code>icts</code> is not meaningful. We provide the following utility functions to convert data to the multiplicities. For large data, it is recommended that you write your own code that can exploit your data structure to convert it to the multiplicity representation in a memory efficient manner.</p>
 
 <h2>Raw samples</h2>
 
@@ -63,7 +63,7 @@ icts =
 
 <h2>Histogram representation</h2>
 
-<p>Discrete entropy does not care about the symbol identity. Since we assume independent and identically distributed sample, the ordering is also irrelvant. Hence, a discrete histogram also contains all information about the data. To convert a histogram to multiplicities, use <code>multiplicitiesFromCounts</code>.</p>
+<p>Discrete entropy does not care about the symbol identity. Since we assume independent and identically distributed samples, the ordering is also irrelvant. Hence, a discrete histogram also contains all information about the data. To convert a histogram to multiplicities, use <code>multiplicitiesFromCounts</code>.</p>
 
 <pre><code>&gt;&gt; [mm, icts] = multiplicitiesFromCounts([1 2 2 4])
 mm =
@@ -79,7 +79,7 @@ icts =
 
 <h2>Converting back to histogram</h2>
 
-<p>For some reason, if you need to see the histogram of your multiplicity representation, use <code>multiplicitiesToCounts</code>.</p>
+<p>If you need the histogram of your multiplicity representation, use <code>multiplicitiesToCounts</code>.</p>
 
 <pre><code>&gt;&gt; hg = multiplicitiesToCounts(mm, icts)
 hg =
@@ -91,7 +91,7 @@ hg =
 
 <h2>Spike train</h2>
 
-<p>For a specialized case when a cell array of spike timings from a simultaneously recorded neurons is given, the multiplicities can be extracted using <code>multisptimes2words.m</code>. <a href="http://nsb-entropy.sourceforge.net/">Nemenman</a> also has a fast C++ implementation for extracting multiplicities from time series.</p>
+<p>For a specialized case when the data are contained in a cell array of spike timings from simultaneously recorded neurons, the multiplicities can be extracted using <code>multisptimes2words.m</code>. <a href="http://nsb-entropy.sourceforge.net/">Nemenman</a> also has a fast C++ implementation for extracting multiplicities from time series.</p>
 
 <h1>Entropy estimation</h1>
 
@@ -100,14 +100,14 @@ hg =
 <pre><code>[Hbls, Hvar] = computeH_PYM_v4(mm, icts, prior)
 </code></pre>
 
-<p>where <code>mm</code> and <code>icts</code> are the multiplicity representation, and <code>prior</code> is an optional structure that rougly specifies the range of power-law tail behavior. If omitted, the default value is used.</p>
+<p>where <code>mm</code> and <code>icts</code> form the multiplicity representation, and <code>prior</code> is an optional structure that rougly specifies the range of power-law tail behavior. If omitted, the default value is used.</p>
 
-<p>The package also includes a few more entropy estimators. The functions in the form <code>computeH_*</code> all takes the multiplicity representation and returns an estimate of <code>H</code> and also a variance if it is supported.</p>
+<p>The package also includes a few more entropy estimators. All functions of the form <code>computeH_*</code> take the multiplicity representation and return an estimate of <code>H</code> as well as a variance (if it is supported).</p>
 
 <h2>Controlling the Prior</h2>
 
-<p>Theoretically the PYM estimator has a degree freedom in specifying the prior in the gamma direction (details in the papers). Basically, any non-diverging, non-negative valued function <code>q(g = gamma)</code> defined on [0, Inf] can be used as a prior. The default is <code>q(g) = exp(-10/(1-g))</code> which gives more emphasis on light tailed or power-law tails with small-exponent distributions, and limit extremely heavy tailed power-law tails from the prior.</p>
+<p>Theoretically, the PYM estimator has a degree freedom in specifying the prior in the gamma direction (details in the papers). Basically, any bounded, non-negative valued function <code>q(g = gamma)</code> defined on [0, Inf] can be used as a prior. The default prior is <code>q(g) = exp(-10/(1-g))</code>, which places more prior probability mass on distributions with light-tails, and limits the amount of prior mass placed on extremely heavy-tailed distributions.</p>
 
-<p>Use <code>prior = pymPriorFactory(priorName, param)</code> to generate prespecified alternative priors such as <code>q(g) = exp(-g)</code>. To use a custom prior, you need to specify the function handles for prior function <code>q(g)</code>, its first, and second derivatives in a structure (see pymPriorFactory.m for details).</p>
+<p>Use <code>prior = pymPriorFactory(priorName, param)</code> to generate prespecified alternative priors, such as <code>q(g) = exp(-g)</code>. To use a custom prior, you must specify function handles for prior the prior function itself, <code>q(g)</code>, as well as its first and second derivatives. Once these function handles are placed in a structure, your custom prior may be used in a manner identical to that of the built-in priors (see pymPriorFactory.m for details).</p>
 
 <p><strong>Enjoy!</strong></p>
