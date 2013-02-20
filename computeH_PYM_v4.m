@@ -52,7 +52,7 @@ function [Hbls, Hvar, SummaryStr] = computeH_PYM_v4(mm, icts, param, verbose)
 % See also: pymPriorFactory
 % Requires: optimization toolbox
 %
-% $Id: computeH_PYM_v4.m 2867 2013-02-20 07:04:17Z evan $
+% $Id: computeH_PYM_v4.m 2868 2013-02-20 07:39:11Z evan $
 % Copyright 2012 Pillow lab. All rights reserved.
 %
 
@@ -268,10 +268,6 @@ function [nlogp ndlogp nddlogp] = nlogPostPYoccupancy(a,d,mm,icts,pymPrior)
 	[prior, dprior, ddprior] = pymPrior.f(pymPrior, a, d);
 	ndlogp = -dlogp - dprior ./ prior;
 	nddlogp = -ddlogp - (prior*ddprior - dprior'*dprior) ./prior^2;
-%     fprintf('here!')
-%     if any(isnan(nddlogp(:))) || any(isinf(nddlogp(:)))
-%         keyboard
-%     end
     elseif nargout > 1
 	[logp dlogp] = logliPYoccupancy(a,d,mm,icts);
 	[prior, dprior] = pymPrior.f(pymPrior, a, d);
