@@ -1,12 +1,12 @@
 PYM entropy estimator MATLAB reference implementation
 =====================================================
 
-This code lives in github: https://github.com/pillowlab/PYMentropy
+version: $Id: README_PYM.md.txt 2719 2013-02-01 00:38:29Z memming $
 
-This is a reference implementation in MATLAB of the entropy estimator based on Pitman-Yor mixture (PYM) prior. For the details of how we derive the estimator see the following papers:
+This is a reference implementation of the entropy estimator based on Pitman-Yor mixture (PYM) prior. For the details of how we derive the estimator see the following papers:
 
 - Evan Archer, Il Memming Park, Jonathan W. Pillow. Bayesian estimation of discrete entropy with mixtures of stick breaking priors. Neural Information Processing Systems [(NIPS) 2012](http://books.nips.cc/nips25.html)
-- Evan Archer, Il Memming Park, Jonathan W. Pillow.  Bayesian Entropy Estimation for Countable Discrete Distributions. (submitted, http://arxiv.org/abs/1302.0328)
+- Evan Archer, Il Memming Park, Jonathan W. Pillow.  Bayesian Entropy Estimation for Countable Discrete Distributions. (submitted, soon to be in arXiv)
 
 Quick example
 =============
@@ -25,15 +25,13 @@ where `Hbls` is the Bayes least squares estimate of entropy, and `Hvar` is the p
 
 Requirements and Installation
 =============================
-To download go to github: https://github.com/pillowlab/PYMentropy/archive/master.zip
-
 You must have Optimization toolbox (for `fmincon`).
 To install, just add the package to your MATLAB path.
 This package is developed under 7.13.0.564 (R2011b).
 
 If using an older version of MATLAB, you may need [lightspeed](http://research.microsoft.com/en-us/um/people/minka/software/lightspeed/) for fast digamma and polygamma implementations.
 
-Run the unit test script `test_HPYM_randomized.m` to check if your copy is working fine.
+Run the **test script (TBD)** to check if your copy is working fine.
 
 License
 =======
