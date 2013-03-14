@@ -13,7 +13,7 @@ function [mm,icts] = multiplicitiesFromSamples(x)
 %    mm    - multiplicities (mm(j) is number of bins with icts(j) samples)
 %    icts  - unique sample counts
 %
-% $Id: multiplicitiesFromSamples.m 2864 2013-02-19 22:39:16Z memming $ 
+% $Id: multiplicitiesFromSamples.m 2968 2013-03-14 21:52:02Z evan $ 
 
 ux = unique(x);
 
@@ -21,11 +21,8 @@ if length(ux) == 1
     icts = length(x);
     mm = 1;
 else
-    if isinteger(nn)
-    else
-	nn = hist(x, ux);
-	[mm, icts] = histc(nn, unique(nn));
-    end
+    nn = histc(x, ux);
+    [mm, icts] = hist(nn, unique(nn));
 end
 
 if size(icts,2) > 1

@@ -13,13 +13,13 @@ function [mm,icts] = multiplicitiesFromCounts(nn)
 %    mm    - multiplicities (mm(j) is number of bins with icts(j) samples)
 %    icts  - unique sample counts
 %
-% $Id: multiplicitiesFromCounts.m 2826 2013-02-14 16:01:12Z memming $
+% $Id: multiplicitiesFromCounts.m 2883 2013-02-22 22:08:27Z evan $
 
 nn(nn==0) = [];
 
 icts = unique(nn);
 if(length(icts) == 1)
-    mm = length(nn);
+    mm = double(length(nn));
 else
     if isinteger(nn)
 	% MATLAB hist cannot convert int8, uint32, etc
@@ -37,3 +37,6 @@ end
 if size(icts,2)>1
     icts = icts';
 end
+
+mm = double(mm);
+icts = double(icts);
