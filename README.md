@@ -95,6 +95,7 @@ Simply call:
     [Hbls, Hvar] = computeH_PYM_v4(mm, icts, prior)
 
 where `mm` and `icts` form the multiplicity representation, and `prior` is an optional structure that rougly specifies the range of power-law tail behavior. If omitted, the default value is used.
+Note that PYM estimator is not finite if there are less than 2 coincidences (1 coincidence = same sample observed twice).
 
 The package also includes a few more entropy estimators. All functions of the form `computeH_*` take the multiplicity representation and return an estimate of `H` as well as a variance (if it is supported).
 
