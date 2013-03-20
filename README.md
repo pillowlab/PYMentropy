@@ -86,7 +86,8 @@ If you need the histogram of your multiplicity representation, use `multipliciti
 
 Spike train
 -----------
-For a specialized case when the data are contained in a cell array of spike timings from simultaneously recorded neurons, the multiplicities can be extracted using `multisptimes2words.m`. [Nemenman](http://nsb-entropy.sourceforge.net/) also has a fast C++ implementation for extracting multiplicities from time series.
+For a specialized case when the data are contained in a cell array of spike timings from simultaneously recorded neurons, the multiplicities can be extracted using `multisptimes2words.m`. See also `fastWords2Counts`, `discreteTimeSeries2Words`, and `words2multiplicities.m`.
+Alternatively, [Nemenman](http://nsb-entropy.sourceforge.net/) also has a fast C++ implementation for extracting multiplicities from time series.
 
 Entropy estimation
 ==================

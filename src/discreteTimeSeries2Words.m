@@ -15,3 +15,6 @@ function list = discreteTimeSeries2Words(words, nAlphabet)
 %   counts: (wordLength x 1) integer representation of the same word sequence
 %
 % See also: words2multiplicities, testFastWords, multiplicitiesFromCounts, fastWord2Counts
+%
+% To compile the C-MEX file:
+%   mex discreteTimeSeries2Words.c fastWordsTree.c

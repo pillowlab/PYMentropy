@@ -1,5 +1,5 @@
 function counts = fastWords2Counts(words, nAlphabet)
-% counts = fastWord2Counts(words, nAlphabet)
+% counts = fastWords2Counts(words, nAlphabet)
 % Creates a histogram of word frequencies from a matrix representation of words
 %
 % Uses a nAlphabet-ary tree that only instantiates for the occurring words.
@@ -15,3 +15,6 @@ function counts = fastWords2Counts(words, nAlphabet)
 %   counts: (M x 1) histogram of word occurrence frequency
 %
 % See also: words2multiplicities, testFastWords, multiplicitiesFromCounts, discreteTimeSeries2Words
+%
+% To compile the C-MEX file:
+%   mex fastWords2Counts.c fastWordsTree.c
