@@ -1,0 +1,185 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>PYMentropy</title>
+  <meta name="description" content="Discrete entropy estimator using the Pitman-Yor mixture (PYM) prior">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">PYMentropy</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">Discrete entropy estimator using the Pitman-Yor mixture (PYM) prior</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/pillowlab/PYMentropy/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/pillowlab/PYMentropy/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/pillowlab/PYMentropy" class="code">View PYMentropy on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h1>PYM entropy estimator MATLAB reference implementation</h1>
+
+<p>This code lives in github: <a href="https://github.com/pillowlab/PYMentropy">https://github.com/pillowlab/PYMentropy</a></p>
+
+<p>This is a reference implementation in MATLAB of the entropy estimator based on a Pitman-Yor mixture (PYM) prior. For the details behind how we derive the estimator, see the following papers:</p>
+
+<ul>
+<li>Evan Archer, Il Memming Park, Jonathan W. Pillow. Bayesian estimation of discrete entropy with mixtures of stick breaking priors. Neural Information Processing Systems <a href="http://books.nips.cc/nips25.html">(NIPS) 2012</a>
+</li>
+<li>Evan Archer, Il Memming Park, Jonathan W. Pillow.  Bayesian Entropy Estimation for Countable Discrete Distributions. (submitted, <a href="http://arxiv.org/abs/1302.0328">http://arxiv.org/abs/1302.0328</a>)</li>
+</ul><h1>Quick example</h1>
+
+<p>Let's estimate entropy from a sequence of natural numbers using the PYM estimator (in practice, the sequence would be samples drawn from some unknown distribution):</p>
+
+<pre><code>&gt;&gt; [mm, icts] = multiplicitiesFromSamples([3 2 4 3 1 4 2 4 4]);
+&gt;&gt; [Hbls, Hvar] = computeH_PYM_v4(mm, icts)
+
+Hbls =
+2.1476
+
+Hvar =
+0.2715
+</code></pre>
+
+<p>Here, <code>Hbls</code> is the Bayes least squares estimate of entropy, and <code>Hvar</code> is the posterior variance of the estimate. The units of this toolbox is <em>nats</em> (natural logarithm); to convert to <em>bits</em>, divide the result by <code>log(2) = 0.6931...</code>.</p>
+
+<h1>Requirements and Installation</h1>
+
+<p>To download go to github: <a href="https://github.com/pillowlab/PYMentropy/archive/master.zip">https://github.com/pillowlab/PYMentropy/archive/master.zip</a></p>
+
+<p>You must have Optimization toolbox (for <code>fmincon</code>).
+To install, just add the package to your MATLAB path.
+This package is developed under 7.13.0.564 (R2011b).</p>
+
+<p>If using an older version of MATLAB, you may need <a href="http://research.microsoft.com/en-us/um/people/minka/software/lightspeed/">lightspeed</a> for fast digamma and polygamma implementations.</p>
+
+<p>Run the unit test script <code>test_HPYM_randomized.m</code> to check if your copy is working fine.</p>
+
+<h1>License</h1>
+
+<p>This package is distributed under the BSD license. See LICENSE.txt for details.</p>
+
+<h1>Converting data</h1>
+
+<p>We represent raw data in three distinct ways, each at a different level of abstraction. The raw data itself are samples of discrete symbols from some unknown distribution. We do not operate directly upon the samples; rather, all entropy estimators provided take a succint representation called <em>multiplicities</em>. The multiplicity representation consists of two vectors of the same length: <code>mm</code> contains the number of symbols with the same number of occurrences, and <code>icts</code> contains the corresponding number of occurrences. In short, <code>mm(j)</code> is number of symbols with <code>icts(j)</code> occurrences. For example, the symbol sequence <code>[a b b c c d d d d]</code> has a multiplicity representation where <code>mm = [1 2 1]</code> and <code>icts = [1 2 4]</code>; this tells us that there is only one symbol with a single occurrence (<code>a</code>), two symbols with two occurrences (<code>b</code> and <code>c</code>), and one symbol with 4 occurrences (<code>d</code>). The ordering in <code>mm</code> and <code>icts</code> is not meaningful. We provide the following utility functions to convert data to the multiplicities. For large data, it is recommended that you write your own code that can exploit your data structure to convert it to the multiplicity representation in a memory efficient manner.</p>
+
+<h2>Raw samples</h2>
+
+<p>Given a vector of symbols with unique numerical representation, use <code>multiplicitiesFromSamples</code>.</p>
+
+<pre><code>&gt;&gt; [mm, icts] = multiplicitiesFromSamples([1 2 2 3.5 3.5 4 4 4 4])
+mm =
+     1
+     2
+     1
+
+icts =
+     1
+     2
+     4
+</code></pre>
+
+<h2>Histogram representation</h2>
+
+<p>Discrete entropy does not care about the symbol identity. Since we assume independent and identically distributed samples, the ordering is also irrelvant. Hence, a discrete histogram also contains all information about the data. To convert a histogram to multiplicities, use <code>multiplicitiesFromCounts</code>.</p>
+
+<pre><code>&gt;&gt; [mm, icts] = multiplicitiesFromCounts([1 2 2 4])
+mm =
+     1
+     2
+     1
+
+icts =
+     1
+     2
+     4
+</code></pre>
+
+<h2>Converting back to histogram</h2>
+
+<p>If you need the histogram of your multiplicity representation, use <code>multiplicitiesToCounts</code>.</p>
+
+<pre><code>&gt;&gt; hg = multiplicitiesToCounts(mm, icts)
+hg =
+     4
+     2
+     2
+     1
+</code></pre>
+
+<h2>Spike train</h2>
+
+<p>For a specialized case when the data are contained in a cell array of spike timings from simultaneously recorded neurons, the multiplicities can be extracted using <code>multisptimes2words.m</code>. See also <code>fastWords2Counts</code>, <code>discreteTimeSeries2Words</code>, and <code>words2multiplicities.m</code>.
+Alternatively, <a href="http://nsb-entropy.sourceforge.net/">Nemenman</a> also has a fast C++ implementation for extracting multiplicities from time series.</p>
+
+<h1>Entropy estimation</h1>
+
+<p>Simply call:</p>
+
+<pre><code>[Hbls, Hvar] = computeH_PYM_v4(mm, icts, prior)
+</code></pre>
+
+<p>where <code>mm</code> and <code>icts</code> form the multiplicity representation, and <code>prior</code> is an optional structure that rougly specifies the range of power-law tail behavior. If omitted, the default value is used.
+Note that PYM estimator is not finite if there are less than 2 coincidences (1 coincidence = same sample observed twice).</p>
+
+<p>The package also includes a few more entropy estimators. All functions of the form <code>computeH_*</code> take the multiplicity representation and return an estimate of <code>H</code> as well as a variance (if it is supported).</p>
+
+<h2>Controlling the Prior</h2>
+
+<p>Theoretically, the PYM estimator has a degree freedom in specifying the prior in the gamma direction (details in the papers). Basically, any bounded, non-negative valued function <code>q(g = gamma)</code> defined on [0, Inf] can be used as a prior. The default prior is <code>q(g) = exp(-10/(1-g))</code>, which places more prior probability mass on distributions with light-tails, and limits the amount of prior mass placed on extremely heavy-tailed distributions.</p>
+
+<p>Use <code>prior = pymPriorFactory(priorName, param)</code> to generate prespecified alternative priors, such as <code>q(g) = exp(-g)</code>. To use a custom prior, you must specify function handles for the prior function, <code>q(g)</code>, as well as its first and second derivatives. Once these function handles are placed in a structure (see pymPriorFactory.m for details), your custom prior may be used in a manner identical to that of the built-in priors.</p>
+
+<p><strong>Enjoy!</strong></p>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/pillowlab" class="avatar"><img src="https://secure.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=30&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" width="48" height="48"/></a> <a href="https://github.com/pillowlab">pillowlab</a> maintains <a href="https://github.com/pillowlab/PYMentropy">PYMentropy</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="http://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/pillowlab/PYMentropy/tarball/master" class="tar">tar</a><a href="https://github.com/pillowlab/PYMentropy/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-39817185-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+</body>
+</html>
