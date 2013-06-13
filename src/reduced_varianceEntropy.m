@@ -15,7 +15,7 @@ function v = reduced_varianceEntropy(mm, icts, alphas, K, flag)
 %
 % TBD: Vectorize multiple alpha (vector alpha). Currenly uses for loop.
 %
-% $Id: reduced_varianceEntropy.m 1694 2012-06-19 12:44:19Z evan $
+% $Id: reduced_varianceEntropy.m 3686 2013-06-04 00:41:45Z memming $
 % Copyright Pillow Lab 2011. All rights reserved.
 
 v = zeros(numel(alphas), 1);

@@ -13,7 +13,7 @@ Quick example
 Let's estimate entropy from a sequence of natural numbers using the PYM estimator (in practice, the sequence would be samples drawn from some unknown distribution):
 
     >> [mm, icts] = multiplicitiesFromSamples([3 2 4 3 1 4 2 4 4]);
-    >> [Hbls, Hvar] = computeH_PYM_v4(mm, icts)
+    >> [Hbls, Hvar] = computeH_PYM(mm, icts)
 
     Hbls =
 	2.1476
@@ -93,7 +93,7 @@ Entropy estimation
 ==================
 Simply call:
 
-    [Hbls, Hvar] = computeH_PYM_v4(mm, icts, prior)
+    [Hbls, Hvar] = computeH_PYM(mm, icts, prior)
 
 where `mm` and `icts` form the multiplicity representation, and `prior` is an optional structure that rougly specifies the range of power-law tail behavior. If omitted, the default value is used.
 Note that PYM estimator is not finite if there are less than 2 coincidences (1 coincidence = same sample observed twice).

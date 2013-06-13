@@ -10,7 +10,7 @@ function [f,checkf] = gammalndiff(x,dx)
 % (3) for checking accuracy: sum(log(x+(0:dx-1))) 
 %     (passed back as optional second argument, to check accuracy).
 %
-% $Id: gammalndiff.m 759 2011-11-16 05:30:59Z pillow $
+% $Id: gammalndiff.m 2820 2013-02-14 02:48:14Z evan $
 
 TOL = 1e10; % use approximate formula for values above this
 
@@ -31,7 +31,9 @@ else
 	f(ii2) = digamma(x(ii2)+dx/2)*dx;
     else % vector dx
 	f(ii1) = gammaln(x(ii1)+dx(ii1))-gammaln(x(ii1));
-	f(ii2) = digamma(x(ii2)+dx(ii2)/2)*dx(ii2);
+        if any(ii2)
+            f(ii2) = digamma(x(ii2)+dx(ii2)/2).*dx(ii2);
+        end
     end
 end
 

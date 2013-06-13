@@ -1,50 +1,52 @@
-function p = dirichletrnd(alpha,K,N)
-% p = dirichletrnd(alpha,K,N)
+function p = dirichletrnd(alphas,K,N)
+% p = dirichletrnd(alphas,K,N)
 % This function draws N K-vectors from a dirichlet distribution with
-% parameters alpha. If alpha is not a vector, it is assumed that all K
-% parameters equal the scalar alpha. 
+% parameters alphas. If alphas is not a vector, it is assumed that all K
+% parameters equal the scalar alphas. 
 % inputs:
-%       alpha : dirichlet parameters; scalar or K-vector
+%       alphas : dirichlet parameters; scalar or K-vector
 %           K : number of bins
 %           N : number of draws to return
 % returns: 
 %       p     : [K x N] matrix (random draws along columns)
 % 
-% $Id: dirichletrnd.m 708 2011-11-09 20:47:44Z pillow $
+% $Id: dirichletrnd.m 3712 2013-06-13 16:10:46Z memming $
 % Evan Archer
-% Copyright Pillow Lab 2010/2011. All rights reserved.
+% Copyright Pillow Lab 2010-2013. All rights reserved.
 
-
-    assert( min( alpha(:) ) > 0, 'Alphas should be >0.')
+    assert( min( alphas(:) ) >= 0, 'Alphas should be >= 0.');
+    if any(alphas(:) == 0)
+       	warning('PYM:dirchletrnd', 'Some alphas are zero.');
+    end
 
     if(nargin < 3)
         N = 1;
     end
     
     if(nargin < 2 || isempty(K))
-        K = length(alpha);
+        K = length(alphas);
     end
     
-    alpha = alpha(:); 
+    alphas = alphas(:); 
     
     I = ones(K,N);
     
-    scalar_alpha = (length(unique(alpha)) == 1);
+    scalar_alphas = (length(unique(alphas)) == 1);
         
-    alpha = bsxfun(@times, I, alpha);
+    alphas = bsxfun(@times, I, alphas);
     
-    y = gamrnd(alpha, 1);
+    y = gamrnd(alphas, 1);
     
     sy = sum(y);
     
     % if we've sampled an empty vector, 
     % uniformly place a random one someplace in the vector
-    nii=find(sy<eps);
+    nii = find(sy<eps);
     if ~isempty(nii)
-        if(~scalar_alpha)
-           warning('I drew distributions empty up to numerical precision. I am placing all mass in a single bin chosen uniformly at random; this may not be dirichlet in this case.') 
+        if ~scalar_alphas
+           warning('PYM:dirchletrnd:toosmall', 'I drew distributions empty up to numerical precision. In this case, I place all mass in a single bin chosen uniformly at random.') 
         end
-        ii0= round((K-1)*rand(1,length(nii)))+1;
+        ii0 = round((K-1)*rand(1,length(nii)))+1;
         for kdx = 1:length(nii)
             y(ii0(kdx), nii(kdx))  = 1;
         end
@@ -53,26 +55,3 @@ function p = dirichletrnd(alpha,K,N)
     
     p = bsxfun(@times, y, 1./sy);
 end
-%     
-%     
-%     for idx = 1:N
-%         sy = 0;
-% %         while sy == 0
-%             y = gamrnd(alpha, I);
-%             sy = sum(y);
-%             if (sy)
-%                 p(:,idx) = y/sy;
-%             else
-%                 fprintf('*');
-%                 p(:,round(K*rand)) = 1;
-%             end
-% %         end
-%     end
-    
-    
-    
-    
-% % Discard probabilities beneath numerical precision (to avoid problems in sums)     
-%     p( p < 1e-15) = 0;
-%     p = bsxfun(@times, p,1./sum(p));
-%     

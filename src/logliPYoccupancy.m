@@ -22,7 +22,7 @@ function [logp dlogp ddlogp] = logliPYoccupancy(alphas,ds,mm,icts)
 % Output:
 %  pk = unnormalized conditional probabiliy P(alpha, d | data)
 %
-% $Id: logliPYoccupancy.m 2550 2013-01-09 05:24:14Z evan $
+% $Id: logliPYoccupancy.m 2863 2013-02-19 21:18:53Z evan $
 
 if(nargin == 3)
     [mm icts] = multiplicitesFromCounts(mm);
@@ -86,6 +86,9 @@ if(nargout>2)
        ddlogp(adx,2) = -sum(KK.*Z2);
        % dd
        ddlogp(adx,3) = -sum((KK.^2).*Z2) + dot(mm, trigamma(icts-d) - trigamma(1-d));
+       if(any(isinf(ddlogp)))
+           keyboard
+       end
    end
    if(length(alphas) == 1)
        q = ddlogp;

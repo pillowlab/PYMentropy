@@ -14,7 +14,7 @@
 <p>Let's estimate entropy from a sequence of natural numbers using the PYM estimator (in practice, the sequence would be samples drawn from some unknown distribution):</p>
 
 <pre><code>&gt;&gt; [mm, icts] = multiplicitiesFromSamples([3 2 4 3 1 4 2 4 4]);
-&gt;&gt; [Hbls, Hvar] = computeH_PYM_v4(mm, icts)
+&gt;&gt; [Hbls, Hvar] = computeH_PYM(mm, icts)
 
 Hbls =
 2.1476
@@ -91,16 +91,18 @@ hg =
 
 <h2>Spike train</h2>
 
-<p>For a specialized case when the data are contained in a cell array of spike timings from simultaneously recorded neurons, the multiplicities can be extracted using <code>multisptimes2words.m</code>. <a href="http://nsb-entropy.sourceforge.net/">Nemenman</a> also has a fast C++ implementation for extracting multiplicities from time series.</p>
+<p>For a specialized case when the data are contained in a cell array of spike timings from simultaneously recorded neurons, the multiplicities can be extracted using <code>multisptimes2words.m</code>. See also <code>fastWords2Counts</code>, <code>discreteTimeSeries2Words</code>, and <code>words2multiplicities.m</code>.
+Alternatively, <a href="http://nsb-entropy.sourceforge.net/">Nemenman</a> also has a fast C++ implementation for extracting multiplicities from time series.</p>
 
 <h1>Entropy estimation</h1>
 
 <p>Simply call:</p>
 
-<pre><code>[Hbls, Hvar] = computeH_PYM_v4(mm, icts, prior)
+<pre><code>[Hbls, Hvar] = computeH_PYM(mm, icts, prior)
 </code></pre>
 
-<p>where <code>mm</code> and <code>icts</code> form the multiplicity representation, and <code>prior</code> is an optional structure that rougly specifies the range of power-law tail behavior. If omitted, the default value is used.</p>
+<p>where <code>mm</code> and <code>icts</code> form the multiplicity representation, and <code>prior</code> is an optional structure that rougly specifies the range of power-law tail behavior. If omitted, the default value is used.
+Note that PYM estimator is not finite if there are less than 2 coincidences (1 coincidence = same sample observed twice).</p>
 
 <p>The package also includes a few more entropy estimators. All functions of the form <code>computeH_*</code> take the multiplicity representation and return an estimate of <code>H</code> as well as a variance (if it is supported).</p>
 

@@ -30,7 +30,7 @@ for idx = 1:Ntest
         nn = mnrnd(N,dirichletrnd(2*rand, K));
         [mm icts] = multiplicitiesFromCounts(nn);
     end
-    [Hbls, Hvar] = computeH_PYM_v4(mm, icts, param);
+    [Hbls, Hvar] = computeH_PYM(mm, icts, param);
     if(GENERATE_TEST)
         H_TEST(idx,1) = Hbls; H_TEST(idx,2) = Hvar;
     else
@@ -54,14 +54,14 @@ end
 % [mm2, icts2] = multiplicitiesFromCounts([2 2 1 1]);
 % [mm3, icts3] = multiplicitiesFromCounts([5 3 2 1]);
 % 
-% [Hbls, Hvar] = computeH_PYM_v4(mm1, icts1);
+% [Hbls, Hvar] = computeH_PYM(mm1, icts1);
 % assertRange(Hbls, 3.965631191137517); assert(Hvar == inf);
 % 
-% [Hbls, Hvar] = computeH_PYM_v4(mm2, icts2);
+% [Hbls, Hvar] = computeH_PYM(mm2, icts2);
 % assertRange(Hbls, 3.067407634404604);
 % assertRange(Hvar, 0.522879923326087);
 % 
-% [Hbls, Hvar] = computeH_PYM_v4(mm3, icts3);
+% [Hbls, Hvar] = computeH_PYM(mm3, icts3);
 % assertRange(Hbls, 1.894590969625430);
 % assertRange(Hvar, 0.195283756259754);
 % 
