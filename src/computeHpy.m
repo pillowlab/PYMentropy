@@ -31,7 +31,6 @@ function [Hpy, Hvar, dbgstr] = computeHpy(mm,icts,alphas,ds)
 %   Hvar = variance of entropy at each alpha
 % 
 % Copyright Pillow Lab 2011-2012. All rights reserved.
-% $Id: computeHpy.m 1974 2012-09-01 23:00:37Z evan $
 
 if isempty(mm) || isempty(icts)
     icts = 0;

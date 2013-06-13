@@ -14,7 +14,6 @@ function [alpha,d] = converttoPYparams(eta,gam)
 %
 % Dependencies: digamma.m, invdigamma.m
 %
-% $Id: converttoPYparams.m 1154 2012-04-06 21:45:09Z pillow $
 
 alpha = invdigamma(eta.*(1-gam)+digamma(1))-1;
 d = 1-invdigamma(digamma(1)-eta.*gam);

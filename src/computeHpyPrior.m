@@ -9,7 +9,6 @@ function [Hpy,Hvar] = computeHpyPrior(alphas,ds)
 %   Hpy = mean entropy at each alpha
 %   Hvar = variance of entropy at each alpha
 % 
-% $Id: computeHpyPrior.m 927 2012-02-14 20:59:44Z evan $
 % Copyright 2012 Pillow Lab. All rights reserved.
 
 Hpy = digamma(1+alphas) - digamma(1-ds);

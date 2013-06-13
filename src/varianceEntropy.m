@@ -14,7 +14,6 @@ function [v moment2 m] = varianceEntropy(alpha, n)
 %
 % See Also: reduced_varianceEntropy
 %
-% $Id: varianceEntropy.m 1201 2012-04-17 07:54:53Z evan $
 % Copyright Pillow Lab 2010. All rights reserved.
 
 n = n(:);

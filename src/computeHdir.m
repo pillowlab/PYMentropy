@@ -16,7 +16,6 @@ function [Hdir,Hvar] = computeHdir(mm,icts,K,alphas)
 %   Hdir = mean entropy at each alpha
 %   Hvar = variance of entropy at each alpha
 % 
-% $Id: computeHdir.m 1201 2012-04-17 07:54:53Z evan $
 % Copyright Pillow Lab 2011. All rights reserved.
 
 if isempty(mm) || isempty(icts)

@@ -10,7 +10,6 @@ function p = dirichletrnd(alphas,K,N)
 % returns: 
 %       p     : [K x N] matrix (random draws along columns)
 % 
-% $Id: dirichletrnd.m 3712 2013-06-13 16:10:46Z memming $
 % Evan Archer
 % Copyright Pillow Lab 2010-2013. All rights reserved.
 

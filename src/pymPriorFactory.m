@@ -17,7 +17,6 @@ function pymPrior = pymPriorFactory(priorName, param)
 %		(and its derivative) transformed through the Jaccobian
 %	    .param: records extra parameters used to create the function handle
 %
-% $Id: pymPriorFactory.m 2792 2013-02-09 21:13:30Z evan $
 % Copyright 2012 Pillow lab. All rights reserved.
 
 pymPrior.param = [];

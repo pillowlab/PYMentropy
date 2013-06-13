@@ -11,7 +11,6 @@ function nn = multiplicitiesToCounts(mm,icts)
 % OUTPUT:
 %    nn - nn(j) is the number of samples in the j'th (sorted) bin
 %
-% $Id: multiplicitiesToCounts.m 1196 2012-04-15 23:59:35Z pillow $
 
 nbins = sum(mm);
 nn = zeros(nbins,1);

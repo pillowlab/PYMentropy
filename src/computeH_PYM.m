@@ -52,7 +52,6 @@ function [Hbls, Hvar, SummaryStr] = computeH_PYM(mm, icts, param, verbose)
 % See also: pymPriorFactory
 % Requires: optimization toolbox
 %
-% $Id: computeH_PYM.m 3719 2013-06-13 20:08:08Z memming $
 % Copyright 2012-2013 Pillow lab. All rights reserved.
 
 if nargin < 4; verbose = false; end

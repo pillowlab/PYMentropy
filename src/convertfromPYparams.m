@@ -14,7 +14,6 @@ function [eta,gam] = convertfromPYparams(alpha,d)
 %
 % See also: pymPriorFactory, computeH_PYM_quad
 %
-% $Id: convertfromPYparams.m 2089 2012-09-20 23:22:55Z memming $
 %
 % Dependencies: digamma.m
 

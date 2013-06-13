@@ -52,7 +52,6 @@ function [Hbls, Hvar, SummaryStr] = computeH_PYM_v4(mm, icts, param, verbose)
 % See also: pymPriorFactory
 % Requires: optimization toolbox
 %
-% $Id: computeH_PYM_v4.m 3719 2013-06-13 20:08:08Z memming $
 % Copyright 2012 Pillow lab. All rights reserved.
 
 warning('PYM:deprecated', 'Deprecated. Use computeH_PYM.m instead');

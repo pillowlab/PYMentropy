@@ -22,7 +22,6 @@ function [logp dlogp ddlogp] = logliPYoccupancy(alphas,ds,mm,icts)
 % Output:
 %  pk = unnormalized conditional probabiliy P(alpha, d | data)
 %
-% $Id: logliPYoccupancy.m 2863 2013-02-19 21:18:53Z evan $
 
 if(nargin == 3)
     [mm icts] = multiplicitesFromCounts(mm);

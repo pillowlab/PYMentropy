@@ -13,7 +13,6 @@ function [mm,icts] = multiplicitiesFromCounts(nn)
 %    mm    - multiplicities (mm(j) is number of bins with icts(j) samples)
 %    icts  - unique sample counts
 %
-% $Id: multiplicitiesFromCounts.m 2883 2013-02-22 22:08:27Z evan $
 
 nn(nn==0) = [];
 

@@ -13,7 +13,6 @@ function [mm,icts] = multiplicitiesFromSamples(x)
 %    mm    - multiplicities (mm(j) is number of bins with icts(j) samples)
 %    icts  - unique sample counts
 %
-% $Id: multiplicitiesFromSamples.m 2968 2013-03-14 21:52:02Z evan $ 
 
 ux = unique(x);
 
