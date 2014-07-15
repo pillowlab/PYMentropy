@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "fastWords.h"
+#include "mex.h"
 
 void addWord(Node** root, wordType* word, int nAlphabet, int wordLength) {
     int k;
