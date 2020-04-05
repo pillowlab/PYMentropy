@@ -6,7 +6,7 @@ This code lives in github: https://github.com/pillowlab/PYMentropy
 This is a reference implementation in MATLAB of the entropy estimator based on a Pitman-Yor mixture (PYM) prior. For the details behind how we derive the estimator, see the following papers:
 
 - Evan Archer, Il Memming Park, Jonathan W. Pillow. Bayesian estimation of discrete entropy with mixtures of stick breaking priors. Neural Information Processing Systems [(NIPS) 2012](http://books.nips.cc/nips25.html)
-- Evan Archer, Il Memming Park, Jonathan W. Pillow.  Bayesian Entropy Estimation for Countable Discrete Distributions. (submitted, http://arxiv.org/abs/1302.0328)
+- Evan Archer, Il Memming Park, Jonathan W. Pillow.  Bayesian Entropy Estimation for Countable Discrete Distributions. Journal of Machine Learning Research (JMLR), 15(81):2833−2868, 2014. http://arxiv.org/abs/1302.0328; http://jmlr.org/papers/v15/archer14a.html)
 
 Quick example
 =============
